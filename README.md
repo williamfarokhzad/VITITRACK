@@ -10,6 +10,12 @@ William Farokhzad, [WIFA Robotics](https://wifarobotics.com/)
 
 [Hackathon details](https://lablab.ai/ai-hackathons/amd-developer-hackathon-act-iii)
 
+## An imagined journey
+
+![Ten fictional stages, from concern to a smile](public/story/fictional-journey-10-steps.webp)
+
+This sequence was generated with AI for the project artwork. It imagines gradual repigmentation and a change in expression. It is not a patient's treatment history, a result produced by VitiTrack or a promise of recovery.
+
 ## Using the app
 
 You can explore the demo without an account. The interface is in Italian.
