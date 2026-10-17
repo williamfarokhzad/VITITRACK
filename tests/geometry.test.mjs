@@ -1,0 +1,12 @@
+import {strict as assert} from 'node:assert';
+import {measure,area} from '../lib/geometry.mjs';
+const box=(x,y,w,h)=>[{x,y},{x:x+w,y},{x:x+w,y:y+h},{x,y:y+h}];
+const roi=box(0,0,100,100);
+assert.equal(area(roi),10000);
+let m=measure(roi,[box(0,0,50,50)],100,100,{points:[{x:0,y:0},{x:100,y:0}],cm:10});
+assert.equal(m.coverage,25);assert.equal(m.areaCm2,25);assert.equal(m.widthCm,5);assert.equal(m.heightCm,5);
+m=measure(roi,[box(0,0,50,50),box(0,0,50,50)],100,100,null);assert.equal(m.coverage,25);assert.equal(m.areaCm2,null);
+m=measure(roi,[box(-50,0,100,50)],100,100,null);assert.equal(m.coverage,25);
+assert.equal(measure([],[],100,100,null),null);
+assert.equal(measure(roi,[],100,100,null).coverage,0);
+console.log('Geometry passed: scale, dimensions, overlap union, ROI clipping, empty and zero cases.');
