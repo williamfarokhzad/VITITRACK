@@ -132,3 +132,7 @@ No doctor or event partner is presented as endorsing the project. Any clinical c
 ## License
 
 The project code is released under the [MIT license](LICENSE), copyright 2026 William Farokhzad / WIFA Robotics. Upstream notices are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Linked articles and any separately obtained model weights keep their own licenses. This repository does not include Gemma weights.
+
+## Short video
+
+The ten fictional portraits are also available as a [14.5-second MP4](public/story/fictional-journey-10-steps.mp4), with soft transitions. The demo home page and gallery show it alongside the complete image. Both include a disclosure that the sequence is fictional and does not show treatment results.
