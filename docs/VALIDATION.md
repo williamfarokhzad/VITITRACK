@@ -11,3 +11,5 @@ Docker was unavailable, so the Docker image itself has not been built or run. Th
 The included CI workflow runs the geometry tests, TypeScript check and portable build on push. Check the Actions tab for the result of the clean-install check after publication. The local checks reused the dependencies installed for the deployed app; a clean installation should also be verified.
 
 These checks cover software behaviour. They do not establish medical accuracy or treatment effectiveness.
+
+The phone diary was checked in a 390-pixel iframe preview: layout, calendar month navigation and Note/Diario navigation worked. The stabilized MP4 decoded without errors. The cover and storyboard edits were inspected visually. This is browser-based responsive QA, not a physical iPhone test.

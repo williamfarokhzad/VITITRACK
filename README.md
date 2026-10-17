@@ -136,3 +136,7 @@ The project code is released under the [MIT license](LICENSE), copyright 2026 Wi
 ## Short video
 
 The ten fictional portraits are also available as a [14.5-second MP4](public/story/fictional-journey-10-steps.mp4), with soft transitions. The demo home page and gallery show it alongside the complete image. Both include a disclosure that the sequence is fictional and does not show treatment results.
+
+## Phone diary and stabilized video
+
+The home screen now follows the supplied mobile design with four diary tabs, latest photo, monthly calendar, timeline and visit preparation. The mint and lavender layout works as a responsive web app and can be added to an iPhone Home Screen. The 14.4-second portrait sequence uses eye-region registration and scale normalization to keep the face centered. Artwork captions have been removed from the cover and contact sheet; the story remains described as a fictional simulation beside the video.
