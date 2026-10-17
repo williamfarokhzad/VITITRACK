@@ -15,3 +15,7 @@ AI routes require identity and explicit consent where personal text or a photo i
 Human messages are separate from the AI conversation. They are accessible only to the patient and the currently enabled, authorised doctor, with a per-thread send limit and visible-page polling every 12 seconds. Demo messages are held in sessionStorage only. There is no invented doctor presence or automatic human reply.
 
 No provider keys are configured, no live AI calls have been verified, and the two-account sharing flow remains untested. This is an experimental documentation prototype, not a diagnostic service.
+
+The shared mobile shell provides one stable five-item bottom navigation and a consistent header at phone and tablet widths. Role selection is in Profile and remains a presentation preference. The doctor avatar is a fictional generated asset in `public/profiles/demo-doctor.webp`; it does not identify a clinical collaborator.
+
+The owner-only provider-settings API stores AES-GCM encrypted configuration in D1 with a hosted encryption secret and provider-specific authenticated data. A public status endpoint exposes configuration flags only. Save and test are separate actions; the test makes one bounded synthetic request. Clinical data consent is versioned in D1. Records, uploads and profile writes require it, as do doctor reads of shared data. Withdrawal revokes sharing. Export and erasure operate on the authenticated subject only, including orphaned photos under that user's storage prefix.

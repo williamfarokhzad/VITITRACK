@@ -2,7 +2,7 @@ import { user, runtime } from '../../../lib/server';
 import { body, language, budget, complete, aiError, ApiError, configured } from '../../../lib/ai';
 export async function POST(req: Request) { try {
     const u = await user(), b = await body(req), e = runtime();
-    if (!configured('amd'))
+    if (!await configured('amd'))
         throw new ApiError('AMD needs a server key, endpoint and model.', 503);
     let data: any[];
     if (b.demo === true) {

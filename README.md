@@ -56,6 +56,8 @@ See [server setup](docs/SERVER_SETUP.md), [the submission notes](docs/HACKATHON.
 
 ## Doctor and patient access
 
+The bottom navigation stays the same on every screen: Home, Photos, Chat, Research and Profile. Choose Patient, Doctor or Public inside Profile; the preference follows you as you navigate. The doctor has a separate fictional portrait. A patient can tap the floating doctor portrait to open care messages directly. The home page shows the fictional story video with an accessible play button.
+
 In Profile / Settings, use `Doctor` with password `Doctor`, or `Patient` with password `Patient`. These are public demo shortcuts, not clinical authentication. The doctor demo has a patient list and a separate workspace. Demo messages stay in the same browser session, so you can switch roles and show both sides without contacting anyone.
 
 Real records and messages require hosted ChatGPT sign-in. A real doctor must also be on the independently verified server allowlist and have the patient's current sharing grant. Revoking the grant blocks further access. Human messages refresh every 12 seconds while the page is visible; no artificial online status or automatic doctor reply is shown. The AI assistant is always identified as AI.
@@ -108,7 +110,9 @@ Docker was not available in the development environment, so the image itself has
 
 The live app uses ChatGPT Sites for sign-in, D1 for records and R2 for photos. A patient can grant access to one clinician from a verified server-side allowlist and revoke it later. The complete flow with two real accounts still needs testing.
 
-Use `.env.example` as a reference and keep actual values in your server's secret settings or an ignored local environment file.
+Open Profile, choose Doctor and sign in with the project owner account. The API panel lets that verified owner save a key and press **Test saved connection**. A test makes a small real model request using a fictional greeting and reports its result, model and elapsed time. The public Doctor demo cannot manage keys. Saved credentials use AES-GCM encryption in D1; the encryption key stays in hosted secrets. The key is never returned to the browser. Evolus tests its agent; workflow execution is a separate approved action.
+
+Use `.env.example` as a reference for hosted defaults or ignored local settings. `INTEGRATION_ADMIN_EMAILS` controls project administration and is separate from `CLINICIAN_EMAILS`. Keep `CREDENTIAL_ENCRYPTION_KEY` stable; changing it makes saved encrypted credentials unreadable. The owner allowlist and encryption key are configured privately on the hosted project. Actual provider keys are still missing.
 
 | Variable | Purpose |
 | --- | --- |
@@ -140,6 +144,14 @@ pnpm run build:portable
 ```
 
 The main interface is in `app/viti-app.tsx`. Server routes are in `app/api/`. The measurement code and tests are in `lib/geometry.mjs` and `tests/geometry.test.mjs`. Database definitions are in `db/` and `drizzle/`, and the example images are in `public/demo-people/`.
+
+## Privacy and data controls
+
+[Privacy Policy](https://wifa-vititrack.williamfar.chatgpt.site/privacy) and [Terms of Use](https://wifa-vititrack.williamfar.chatgpt.site/terms) are available in English and Italian. Profile contains explicit health-storage consent, an adult declaration, consent withdrawal, a JSON data export and permanent deletion of the user's app record, stored photos, sharing and care messages. Exported photo links require the user's sign-in; photos are downloaded separately. Withdrawal revokes doctor access and blocks new health-data storage. Existing personal records remain accessible to their owner for export or deletion.
+
+Consent is checked on the server, including doctor access to shared records and photos. Clinical records are never published in the synthetic community view. The app adds no advertising trackers. API settings are restricted to the project owner, separately from clinical roles.
+
+These controls do not establish full GDPR compliance. Controller contact details and address, processor contracts, transfer safeguards, retention and backup policies, and a DPIA assessment still need review before clinical deployment. The published prototype notice states those limits.
 
 ## Before use with patients
 

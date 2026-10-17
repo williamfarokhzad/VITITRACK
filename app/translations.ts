@@ -1,4 +1,7 @@
 const translations:Record<string,string>={
+"Informativa privacy":"Privacy Policy",
+"Condizioni d’uso":"Terms of Use",
+
 "L’agente consulta la biblioteca configurata in Evolus. Non inserire dati identificativi o foto. Verifica sempre le fonti originali.":"The knowledge agent uses the library configured in Evolus. Leave out identifying details and photos. Always check the original sources.",
 "Mag":"May","Giu":"Jun","Lug":"Jul","Ago":"Aug","Set":"Sep","Ott":"Oct",
 

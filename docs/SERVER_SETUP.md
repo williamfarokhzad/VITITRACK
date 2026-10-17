@@ -1,6 +1,8 @@
 # Server setup
 
-Keep values in the hosting project's environment settings, marked as secrets where appropriate. Do not paste keys into chats, client code, screenshots or GitHub. Deploy again after changing the hosted environment.
+You can configure provider keys in Profile → Doctor → Project API Settings after signing in with the verified project owner account. Save first, then test the saved connection. The shared Doctor / Doctor demo does not authorise administration. The hosted project has an owner allowlist and a private encryption key; provider secrets are encrypted in D1 and never returned by the settings API.
+
+Hosted environment settings remain an alternative. Mark sensitive values as secrets. Do not paste keys into chats, client code, screenshots or GitHub. Deploy again after changing the hosted environment.
 
 | Name | Value to provide | Secret |
 | --- | --- | --- |
@@ -26,3 +28,5 @@ To verify a connection, sign in to the hosted app, select the provider and send 
 For real patient sharing, test with two separate authorised accounts and a non-identifying test record. Confirm the doctor can read only the granted record and that revocation blocks records, photos and messages. This two-account integration test has not been completed.
 
 The app does not claim medical validation or partner-prize eligibility. The Evolus partner brief may require a dedicated AMD vLLM deployment in addition to these API adapters; check the current event requirements before submission.
+
+Owner settings require `INTEGRATION_ADMIN_EMAILS` and `CREDENTIAL_ENCRYPTION_KEY` (32 random bytes encoded in base64url). The hosted values are already configured privately. Never rotate the encryption key casually: saved settings need the same key to decrypt. Saved app settings override hosted provider defaults. The app enforces same-origin JSON writes and verifies the project administrator on every settings request. Test requests send a fictional greeting, use a small token limit, and record success or failure; they do not test or trigger an Evolus workflow.

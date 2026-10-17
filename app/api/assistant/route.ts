@@ -5,7 +5,7 @@ export async function POST(req: Request) { try {
     const b = await body(req), provider = String(b.provider || 'amd');
     if (!['amd', 'google', 'evolus'].includes(provider))
         throw new ApiError('Choose an available provider.');
-    if (!configured(provider))
+    if (!await configured(provider))
         throw new ApiError('This provider needs server configuration.', 503);
     if (b.consent !== true)
         throw new ApiError('Please approve sending your message to this AI provider.');

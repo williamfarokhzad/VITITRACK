@@ -1,8 +1,9 @@
+import {providerEnv} from '../../../lib/provider-settings';
 import { budget, body, language, remote, aiError } from '../../../lib/ai';
 import { user, runtime, failure } from '../../../lib/server';
 export async function POST(req: Request) { try {
     await user();
-    const e = runtime();
+    const e = await providerEnv();
     const b = await body(req);
     if (!e.EVOLUS_API_KEY || !e.EVOLUS_APPLICATION_ID)
         return Response.json({ error: 'Evolus non collegato: configura il workspace evento, API key e application ID.' }, { status: 503 });

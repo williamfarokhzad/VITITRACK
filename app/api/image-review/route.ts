@@ -3,7 +3,7 @@ import { user } from '../../../lib/server';
 export async function POST(req: Request) { try {
     await user();
     const b = await body(req, 1500000);
-    if (!configured('google'))
+    if (!await configured('google'))
         throw new ApiError('Google AI needs server configuration.', 503);
     if (b.consent !== true)
         throw new ApiError('Please approve sending this photo to Google AI.');

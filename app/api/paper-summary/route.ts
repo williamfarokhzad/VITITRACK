@@ -4,7 +4,7 @@ import { latestPapers } from '../../../lib/papers';
 export async function POST(req: Request) { try {
     await user();
     const b = await body(req);
-    if (!configured('google'))
+    if (!await configured('google'))
         throw new ApiError('Google AI needs server configuration.', 503);
     const p = (await latestPapers()).articles.find(p => p.id === b.id && p.source === b.source);
     if (!p || !p.abstract || p.retracted)

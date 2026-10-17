@@ -15,6 +15,13 @@
       "when": 1792249321190,
       "tag": "0001_polite_la_nuit",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792250812690,
+      "tag": "0002_red_shape",
+      "breakpoints": true
     }
   ]
 }
