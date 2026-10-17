@@ -13,3 +13,11 @@ The included CI workflow runs the geometry tests, TypeScript check and portable 
 These checks cover software behaviour. They do not establish medical accuracy or treatment effectiveness.
 
 The phone diary was checked in a 390-pixel iframe preview: layout, calendar month navigation and Note/Diario navigation worked. The stabilized MP4 decoded without errors. The cover and storyboard edits were inspected visually. This is browser-based responsive QA, not a physical iPhone test.
+
+## Bilingual and communication update
+
+The EN / IT switch, English calendar, Doctor / Doctor demo login, doctor dashboard and a same-browser doctor-to-patient message were exercised in the browser. The 390-pixel phone diary was inspected visually. A compatibility issue with demo message IDs on an HTTP preview was fixed and retested.
+
+Twelve route contract checks use the actual handlers with isolated identity and provider fixtures. They cover anonymous access, consent, rejection of free-text AMD input, removal of chat history from AMD sample requests, fixed server-owned AMD report data, doctor allowlisting, patient grant checks and revoked access. These are software contract tests, not live provider tests or a clinical validation.
+
+The latest-paper request failed from the development preview. The error state and source link render correctly; hosted retrieval remains unverified. No AMD, Google AI or Evolus inference was run, because the necessary secrets are absent. No real patient data was sent to any provider. The new D1 schema adds messages and usage counters through an appended migration.

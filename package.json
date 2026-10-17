@@ -12,11 +12,11 @@
     "start": "node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json --local --persist-to .wrangler/state --ip 127.0.0.1 --inspector-port 0",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
-    "test": "node tests/geometry.test.mjs",
+    "test": "node tests/geometry.test.mjs && node --experimental-vm-modules scripts/test-ai-security.mjs",
     "typecheck": "tsc --noEmit",
     "dev:portable": "vinext dev --port 5173",
     "build:portable": "vinext build",
-    "db:local": "wrangler d1 execute DB --local --config dist/server/wrangler.json --file drizzle/0000_colossal_phil_sheldon.sql"
+    "db:local": "node scripts/migrate-local.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

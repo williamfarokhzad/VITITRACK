@@ -1,31 +1,17 @@
-# How the app is built
+# Architecture
 
-## Photos and annotations
+VitiTrack is a React/TypeScript web app built with Vinext and a Cloudflare Worker. It is responsive and can be added to an iPhone Home Screen. English is the default language; an EN / IT context translates presentation strings and selects the assistant response language. User-entered clinical text is preserved.
 
-VitiTrack uses React and Vinext. Photos are resized and converted to JPEG before they open in the canvas editor. The user draws a region of interest, and a simple brightness and colour threshold suggests patches inside it. The user can change those patches or draw them manually.
+D1 stores profiles, journal entries, sharing grants, private care messages and bounded AI usage counters. R2 stores photos. Browser resizing converts images to JPEG, with manual polygons and threshold-based suggestions. Area calculations use clipped polygon unions and an optional coplanar ruler reference. LLMs never supply the numerical measurements.
 
-`lib/geometry.mjs` calculates the combined patch area without counting overlaps twice and clips it to the selected region. A ruler photographed in the same plane can provide an approximate scale. This is an experimental measurement tool, not a diagnostic model.
+The hosted sign-in gateway supplies trusted identity. All real record routes check it on the server. Doctor routes additionally check the email allowlist and current patient grant. Shared Doctor / Doctor and Patient / Patient shortcuts change fictional demo views only. The portable container strips gateway identity headers.
 
-Diary entries and observations feed an editable visit report. The ten public example profiles are fictional, their images were generated with AI, and the starting charts contain invented values. They are not a record of treatment results.
+AI requests stay server-side. Google AI handles conversational support, consented photo-quality feedback and summaries of retrieved abstracts. Evolus supplies a separately configured educational agent and approved review workflow. AMD Token Factory runs Gemma on fixed fictional inputs only, respecting the event guide's restriction on sensitive health data. Its model catalog is checked before use. No key is returned in service-status responses.
 
-## Records and access
+The public papers route retrieves bounded metadata from Europe PMC and caches it for one hour. The authenticated summary route resolves a source ID against those retrieved articles; it does not accept arbitrary URLs or user-provided abstracts. Abstract-only summaries retain the original source link. Errors are shown without claiming fresh results.
 
-The hosted app receives verified identity information through the ChatGPT Sites gateway. D1 stores profiles, records and sharing grants. R2 stores private photos.
+AI routes require identity and explicit consent where personal text or a photo is transferred. Requests are bounded to eight chat turns, limited input sizes, short outputs, a 25-second provider timeout and 30 AI operations per user per hour. Responses identify the provider and model. No hidden provider fallback runs.
 
-A clinician needs both a server-side allowlist entry and the patient's permission to view that patient's records. Switching the interface to the doctor view does not grant access. The full process with separate patient and clinician accounts still needs testing.
+Human messages are separate from the AI conversation. They are accessible only to the patient and the currently enabled, authorised doctor, with a per-thread send limit and visible-page polling every 12 seconds. Demo messages are held in sessionStorage only. There is no invented doctor presence or automatic human reply.
 
-## AI connections
-
-The `/api/report` route reads structured observations and sends them to the configured AMD endpoint using a server-held key. The intended model is Google Gemma. The output is a draft summary for the user to review. Original photos are not sent by this route.
-
-The `/api/evolus` route supports agent chat and workflow execution. The proposed setup combines an approved reference library with a report preparation workflow. The agent would use an open model hosted on AMD.
-
-The workflow should extract dates, observations and questions from the report text, check required fields and return a draft for review. Its actual input schema must be checked in the Evolus workspace. External inference and workflow execution have not yet been verified. There is no automatic delivery to doctors or automatic change to a patient's care.
-
-## Local and hosted versions
-
-The hosted version relies on the Sites identity gateway. The local development server has a loopback-only mock account. The Docker demo has no trusted sign-in gateway, so `VITITRACK_CONTAINER_DEMO=true` removes incoming identity headers and leaves the anonymous demo available.
-
-Hosting elsewhere requires a verified authentication adapter and storage setup. Forwarding identity headers supplied by the browser is not sufficient.
-
-This source package comes from deployed revision `aceae0e3d346d457da3f5e2daefe361cd5bd9404`. The export adds documentation, container packaging and an identity-header guard for the container, and removes the hosting project ID. These changes have not been deployed to the live app.
+No provider keys are configured, no live AI calls have been verified, and the two-account sharing flow remains untested. This is an experimental documentation prototype, not a diagnostic service.

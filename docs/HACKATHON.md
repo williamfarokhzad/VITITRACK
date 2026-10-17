@@ -34,9 +34,9 @@ I have lived with vitiligo myself. Looking at photos of my hands, I sometimes wo
 
 The app brings photos, observations and a care diary into one place. People can review experimental measurements of the areas they have marked and prepare an editable report for a dermatology appointment. There is also a clinician view for consent-based access and a public view with fictional examples.
 
-The prototype has an Italian mobile interface and ten AI-generated example profiles. Its image processing runs in the browser and needs human review. It has not been clinically validated.
+The prototype has an English and Italian mobile interface and ten AI-generated example profiles. Its image processing runs in the browser and needs human review. It has not been clinically validated.
 
-The planned AI features use Google Gemma on AMD for report drafting, with Evolus supporting a reference library and report workflow. The adapters are implemented, but these external services still need to be configured and tested. VitiTrack does not diagnose vitiligo, prescribe care or claim that a treatment works.
+The implemented adapters use AMD-hosted Gemma for fixed fictional demos, Google AI for conversation, photo-quality review and abstract summaries, and Evolus for a configured knowledge agent and approved review workflow. Token Factory receives no personal health data. The adapters are implemented, but these external services still need to be configured and tested. VitiTrack does not diagnose vitiligo, prescribe care or claim that a treatment works.
 
 Category: Health and Wellbeing. Describe AMD, Gemma and Evolus as planned integrations until their live use has been verified, then update the description and technology tags to match the demonstration.
 

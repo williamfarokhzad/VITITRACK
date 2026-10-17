@@ -18,7 +18,7 @@ This sequence was generated with AI for the project artwork. It imagines gradual
 
 ## Using the app
 
-You can explore the demo without an account. The interface is in Italian.
+You can explore the demo without an account. Choose English or Italian with the EN / IT switch. English is the default.
 
 Open “Volti e percorsi” to browse the example profiles. Select “Analizza mani” to open a hand photo in the editor. Outline the area you want to follow, then review the proposed white patches. You can also draw the patches yourself.
 
@@ -36,15 +36,29 @@ The editor runs in the browser. It resizes the image, converts it to JPEG and lo
 
 These measurements are experimental. Lighting, skin tone, camera settings, hand position and skin curvature can affect them. They are not a diagnosis or a validated score such as VASI. No clinical trial or accuracy study has been carried out for this prototype.
 
-## AMD, Google Gemma and Evolus
+## AMD, Google AI and Evolus
 
-The plan is to use Google Gemma running on AMD to turn diary entries into a draft visit summary. Evolus would support a reference library and a workflow that prepares the report for human review.
+Each service has a different job. The app shows which credentials are configured; this is separate from a successful live connection.
 
-The server routes for these integrations are written, but successful live calls have not yet been verified. The exact Gemma model, AMD endpoint and Evolus workspace still need to be configured and tested. The current image measurements run locally in the browser.
+| Service | Job in this prototype |
+| --- | --- |
+| AMD Token Factory / Google Gemma | Fixed fictional examples and a sample visit draft. The server checks the current model catalog before inference. |
+| Google AI / Gemini Flash-Lite | Conversational support, photo-quality feedback and summaries of retrieved paper abstracts. |
+| Evolus | A configured knowledge agent and an explicitly approved report preparation workflow. |
 
-The app also includes a care diary, an editable report and a small collection of research links. The research collection was checked on 17 October 2026. It includes a PubMed search link for newer papers, but it does not update automatically.
+The event's Token Factory guide lists `https://developer.amd.com.cn/radeon/api/v1` and `Gemma-4-31B-IT`. Its terms prohibit sensitive health data. For that reason, AMD receives only server-owned fictional report data or a small set of fixed sample questions. It never receives uploaded photos, real diary entries or free-text personal messages. Google Gemma is a model running on AMD; Google AI is a separate API.
 
-See [the submission notes](docs/HACKATHON.md) for the remaining event requirements and [the architecture notes](docs/ARCHITECTURE.md) for the implementation.
+The research page requests recent papers from Europe PMC, sorted by publication date, and shows the retrieval time. Results are cached for up to one hour. Abstract summaries use Google AI and link back to the retrieved source. The curated reading list is kept separately. If retrieval fails, the app displays the error and a PubMed link rather than presenting older results as a live feed.
+
+Live calls to the three AI providers have not yet been verified: the API keys and Evolus workspace IDs are still missing. The uploaded AMD guide contains documentation, not an actual team key. The research service could not be reached from the development preview; its hosted retrieval still needs verification.
+
+See [server setup](docs/SERVER_SETUP.md), [the submission notes](docs/HACKATHON.md) and [the architecture notes](docs/ARCHITECTURE.md).
+
+## Doctor and patient access
+
+In Profile / Settings, use `Doctor` with password `Doctor`, or `Patient` with password `Patient`. These are public demo shortcuts, not clinical authentication. The doctor demo has a patient list and a separate workspace. Demo messages stay in the same browser session, so you can switch roles and show both sides without contacting anyone.
+
+Real records and messages require hosted ChatGPT sign-in. A real doctor must also be on the independently verified server allowlist and have the patient's current sharing grant. Revoking the grant blocks further access. Human messages refresh every 12 seconds while the page is visible; no artificial online status or automatic doctor reply is shown. The AI assistant is always identified as AI.
 
 ## Running locally
 
@@ -71,7 +85,7 @@ pnpm run db:local
 pnpm run dev:portable
 ```
 
-Run `db:local` once to create the initial local schema. Use test data for local development.
+Run `db:local` after each database migration. It applies the migration files in order and remembers completed migrations. Use test data for local development.
 
 ## Running with Docker
 
@@ -101,13 +115,17 @@ Use `.env.example` as a reference and keep actual values in your server's secret
 | `AMD_API_KEY` | Key for the approved AMD endpoint |
 | `AMD_BASE_URL` | OpenAI-compatible base URL, including `/v1` |
 | `AMD_MODEL` | Exact Gemma model ID available on that endpoint |
+| `GOOGLE_AI_API_KEY` | Google AI Studio API key |
+| `GOOGLE_AI_MODEL` | Multimodal model; default `gemini-3.5-flash-lite` |
 | `EVOLUS_API_KEY` | Evolus API key |
 | `EVOLUS_APPLICATION_ID` | Event workspace application ID |
 | `EVOLUS_AGENT_ID` | Configured agent ID |
 | `EVOLUS_WORKFLOW_ID` | Report workflow ID |
 | `CLINICIAN_EMAILS` | Comma-separated list of independently verified clinician emails |
 
-`/api/report` sends structured observations to the configured model. It does not send the original photos. `/api/evolus` supports agent chat and workflow calls. Check the workflow's `{text: ...}` input against the schema in your Evolus workspace before using it.
+`/api/assistant` handles bounded, consented conversations with the selected service. `/api/image-review` sends an explicitly approved resized JPEG to Google for lighting, focus and framing feedback. Geometric measurement stays local and human-reviewed. `/api/report` uses fixed fictional data with AMD. `/api/evolus` accepts explicitly approved workflow text; check the `{text, language}` input against the schema in your workspace first. The event workspace and its agent/library/workflow have not been created by this code.
+
+AI requests require sign-in, have size and timeout limits, and share a per-user allowance of 30 requests per hour. Provider-level and team-level quotas still apply. A rate-limit error asks the user to wait; the app does not silently switch providers or repeat paid requests.
 
 `/api/integrations` shows whether settings are present. It does not confirm that a service has responded successfully.
 
