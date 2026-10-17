@@ -33,3 +33,11 @@ No real provider credentials were entered and no live AI test was performed. Act
 ## Automatic story playback
 
 A fresh page navigation started the story video without a Play click. The browser reported autoplay=true, muted=true, loop=true, paused=false, readyState=4 and advancing playback time. Inline playback is enabled and the play/pause button remains available. Actual iPhone power-saving or browser policies can still suspend autoplay.
+
+## Timeline and community
+
+The home timeline now shows six separate fictional hand illustrations. The full timeline offers individual frames and a first/last comparison, explicitly independent from saved clinical records and chart values. In the browser, all six home images and both comparison images rendered.
+
+Community includes four fictional discussion examples, topic/search filters, sample reactions, bookmarks, a private draft and private comments. Draft saving, a bookmark with the Saved filter, a private comment, search and the research-insights tab were exercised. English and Italian labels were checked. At 320- and 390-pixel iframe widths the page had no horizontal overflow and retained the same five bottom destinations. This is responsive browser QA, not physical iPhone testing.
+
+Community activity is confined to sessionStorage in the current browser tab; it is not published or sent to other users. The notice, privacy text and clear-demo action reflect that scope. A real multi-user community with accounts, moderation and server persistence is not implemented.

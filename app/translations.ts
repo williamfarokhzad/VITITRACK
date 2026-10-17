@@ -1,4 +1,7 @@
 const translations:Record<string,string>={
+"Comunità":"Community",
+"I valori del grafico sono inventati e non sono misurati dalla sequenza illustrativa. Le immagini dimostrative non documentano risultati terapeutici.":"The chart values are fictional and are not measured from the illustrated sequence. Demonstration images do not document treatment outcomes.",
+
 "Informativa privacy":"Privacy Policy",
 "Condizioni d’uso":"Terms of Use",
 
