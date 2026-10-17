@@ -1,13 +1,14 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Localized, useLocale } from './locale';
 import { Film, Images, ArrowUpRight, Download, Play, Pause } from 'lucide-react';
 export default function JourneyStory({ compact = false }: {
     compact?: boolean;
 }) {
     const video = useRef<HTMLVideoElement>(null), [playing, setPlaying] = useState(false), { l } = useLocale();
+    useEffect(()=>{const element=video.current;if(!element)return;element.muted=true;element.defaultMuted=true;element.play().catch(()=>setPlaying(false));},[]);
     return <Localized><section className={"journey-story " + (compact ? "journey-compact" : "")} aria-labelledby="journey-title">
-  <div className="journey-film"><video ref={video} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} controls playsInline preload="metadata" poster="/story/journey-poster-v2.jpg" aria-label="Dieci immagini in sequenza, storia immaginaria"><source src="/story/fictional-journey-stabilized-v2.mp4" type="video/mp4"/>Il browser non supporta il video. Usa il collegamento per scaricarlo.</video><button type="button" className="journey-play" data-playing={playing} aria-label={playing ? l('Pause story video', 'Metti in pausa il video') : l('Play story video', 'Riproduci il video')} onClick={() => { if (playing)
+  <div className="journey-film"><video ref={video} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} controls autoPlay muted loop playsInline preload="auto" poster="/story/journey-poster-v2.jpg" aria-label="Dieci immagini in sequenza, storia immaginaria"><source src="/story/fictional-journey-stabilized-v2.mp4" type="video/mp4"/>Il browser non supporta il video. Usa il collegamento per scaricarlo.</video><button type="button" className="journey-play" data-playing={playing} aria-label={playing ? l('Pause story video', 'Metti in pausa il video') : l('Play story video', 'Riproduci il video')} onClick={() => { if (playing)
         video.current?.pause();
     else
         video.current?.play().catch(() => { }); }}>{playing ? <Pause size={19}/> : <Play size={21}/>}</button><span className="journey-film-label"><Film size={14}/> 10 momenti · simulazione</span></div>

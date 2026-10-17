@@ -29,3 +29,7 @@ The same five bottom destinations were checked across patient and doctor Home, P
 The public Doctor demo showed the locked API settings panel and no key input or saved credentials. Contract tests exercise AES-GCM encryption and tamper rejection, project-owner authorisation, cross-origin rejection, a bounded synthetic model check, consent version/age requirements, withdrawal, subject-scoped export and erasure. All seven tables were created successfully by applying the three immutable migrations to SQLite. TypeScript and the existing geometry and access tests passed.
 
 No real provider credentials were entered and no live AI test was performed. Actual signed-in owner configuration and the two-account clinical sharing flow remain untested end to end. Responsive browser checks are not a physical iPhone test. The privacy pages describe prototype limits rather than claiming certified or complete GDPR compliance.
+
+## Automatic story playback
+
+A fresh page navigation started the story video without a Play click. The browser reported autoplay=true, muted=true, loop=true, paused=false, readyState=4 and advancing playback time. Inline playback is enabled and the play/pause button remains available. Actual iPhone power-saving or browser policies can still suspend autoplay.
