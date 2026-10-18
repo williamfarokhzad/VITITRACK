@@ -32,12 +32,27 @@ export const guidance = (lang: Language) => `You are VitiTrack's AI assistant, n
 async function remote(url: string, init: RequestInit) {
     const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 25000);
     try {
-        const r = await fetch(url, { ...init, signal: controller.signal, redirect: 'error' });
+        let r: Response;
+        try {
+            r = await fetch(url, { ...init, signal: controller.signal, redirect: 'error' });
+        }
+        catch (err: any) {
+            const host = new URL(url).hostname;
+            if (err?.name === 'AbortError')
+                throw new ApiError(`Connection to ${host} timed out. Check the provider status and try again.`, 504);
+            throw new ApiError(`The hosted app could not reach ${host}. Check the provider endpoint and hosted network access.`, 502);
+        }
         if (!r.ok) {
             await r.body?.cancel();
             if (r.status === 429)
                 throw new ApiError('Provider limit reached. Please wait before retrying.', 429);
-            throw new ApiError('Provider unavailable. Check the server credentials, model and quota.', 502);
+            if (r.status === 401 || r.status === 403)
+                throw new ApiError(`The provider rejected the saved key or its permissions (HTTP ${r.status}). Check that the key belongs to this service and has API access.`, 502);
+            if (r.status === 400 || r.status === 404)
+                throw new ApiError(`The provider rejected the model or endpoint (HTTP ${r.status}). Check the exact model ID and API base URL.`, 502);
+            if (r.status === 402)
+                throw new ApiError('The provider reports that the project has no available credits or quota (HTTP 402).', 502);
+            throw new ApiError(`The provider returned HTTP ${r.status}. Check its status, quota and project permissions.`, 502);
         }
         return await r.json() as any;
     }
