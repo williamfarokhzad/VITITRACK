@@ -60,7 +60,7 @@ The bottom navigation stays the same on every screen: Home, Photos, Chat, Resear
 
 In Profile / Settings, use `Doctor` with password `Doctor`, or `Patient` with password `Patient`. These are public demo shortcuts, not clinical authentication. The doctor demo has a patient list and a separate workspace. Demo messages stay in the same browser session, so you can switch roles and show both sides without contacting anyone.
 
-Real records and messages require hosted ChatGPT sign-in. A real doctor must also be on the independently verified server allowlist and have the patient's current sharing grant. Revoking the grant blocks further access. Human messages refresh every 12 seconds while the page is visible; no artificial online status or automatic doctor reply is shown. The AI assistant is always identified as AI.
+Real records and messages require secure hosted sign-in. A real doctor must also be on the independently verified server allowlist and have the patient's current sharing grant. Revoking the grant blocks further access. Human messages refresh every 12 seconds while the page is visible; no artificial online status or automatic doctor reply is shown. The AI assistant is always identified as AI.
 
 ## Running locally
 
@@ -108,7 +108,7 @@ Docker was not available in the development environment, so the image itself has
 
 ## Server configuration
 
-The live app uses ChatGPT Sites for sign-in, D1 for records and R2 for photos. A patient can grant access to one clinician from a verified server-side allowlist and revoke it later. The complete flow with two real accounts still needs testing.
+The live app uses secure hosted sign-in, D1 for records and R2 for photos. A patient can grant access to one clinician from a verified server-side allowlist and revoke it later. The complete flow with two real accounts still needs testing.
 
 Open Profile, choose Doctor and sign in with the project owner account. The API panel lets that verified owner save a key and press **Test saved connection**. A test makes a small real model request using a fictional greeting and reports its result, model and elapsed time. The public Doctor demo cannot manage keys. Saved credentials use AES-GCM encryption in D1; the encryption key stays in hosted secrets. The key is never returned to the browser. Evolus tests its agent; workflow execution is a separate approved action.
 
