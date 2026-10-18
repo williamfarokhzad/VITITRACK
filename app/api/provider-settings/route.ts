@@ -18,7 +18,14 @@ export async function POST(req: Request) {
             throw new ApiError('Unknown provider.');
         const e = runtime();
         if (b.action === 'test') {
-            await budget();
+            try {
+                await budget();
+            }
+            catch (err: any) {
+                if (err instanceof ApiError)
+                    throw err;
+                throw new ApiError('The app could not check its AI usage limit. Its hosted database needs attention; the provider was not called.', 503);
+            }
             const start = Date.now();
             try {
                 const d = await complete(provider, [{ role: 'user', content: 'This is a fictional connectivity check. Reply with one brief greeting. No patient data is involved.' }], language(b.language), undefined, 64);
@@ -27,7 +34,11 @@ export async function POST(req: Request) {
                 return Response.json(result, { headers: { 'Cache-Control': 'no-store' } });
             }
             catch (err: any) {
-                await e.DB.prepare('UPDATE provider_settings SET tested_at=?,test_status=?,test_detail=? WHERE id=?').bind(new Date().toISOString(), 'failed', 'Connection or model check failed', provider).run();
+                const detail = err instanceof ApiError ? err.message : 'Unexpected server error during the provider check.';
+                try {
+                    await e.DB.prepare('UPDATE provider_settings SET tested_at=?,test_status=?,test_detail=? WHERE id=?').bind(new Date().toISOString(), 'failed', detail.slice(0, 240), provider).run();
+                }
+                catch { /* Preserve the provider error if recording the diagnostic also fails. */ }
                 throw err;
             }
         }
