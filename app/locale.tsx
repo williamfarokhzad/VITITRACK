@@ -12,8 +12,28 @@ export function LocaleProvider({ children }: {
     set('it'); }, []); function setLocale(x: Locale) { set(x); localStorage.setItem('vititrack-language', x); } useEffect(() => { document.documentElement.lang = locale; }, [locale]); return <Context.Provider value={{ locale, setLocale }}>{children}</Context.Provider>; }
 export function useLocale() { const { locale, setLocale } = useContext(Context); return { locale, setLocale, l: (en: string, it: string) => locale === 'it' ? it : en, t: (s: string) => translate(s, locale) }; }
 export function translate(s: string, locale: Locale) { if (locale === 'it' && errors[s])
-    return errors[s]; if (locale === 'it')
-    return s === 'AMD demo uses fixed fictional records only. Token Factory does not permit sensitive health data.' ? 'La demo AMD usa solo registrazioni fittizie predefinite. Token Factory non consente dati sanitari sensibili.' : s; const key = s.trim(); return translations[key] ? s.replace(key, translations[key]) : s; }
+    return errors[s]; if (locale === 'it') {
+    const timeout = s.match(/^Connection to ([\w.-]+) timed out\. Check the provider status and try again\.$/);
+    if (timeout)
+        return `Connessione a ${timeout[1]} scaduta. Verifica lo stato del servizio e riprova.`;
+    const unreachable = s.match(/^The hosted app could not reach ([\w.-]+)\. Check the provider endpoint and hosted network access\.$/);
+    if (unreachable)
+        return `L’app pubblicata non riesce a raggiungere ${unreachable[1]}. Verifica l’endpoint e l’accesso di rete del server.`;
+    const auth = s.match(/^The provider rejected the saved key or its permissions \(HTTP (\d{3})\)\. Check that the key belongs to this service and has API access\.$/);
+    if (auth)
+        return `Il servizio ha rifiutato la chiave salvata o i relativi permessi (HTTP ${auth[1]}). Verifica che la chiave appartenga al servizio e abbia accesso API.`;
+    const model = s.match(/^The provider rejected the model or endpoint \(HTTP (\d{3})\)\. Check the exact model ID and API base URL\.$/);
+    if (model)
+        return `Il servizio ha rifiutato il modello o l’endpoint (HTTP ${model[1]}). Verifica l’ID esatto del modello e l’URL base API.`;
+    const serviceStatus = s.match(/^The provider returned HTTP (\d{3})\. Check its status, quota and project permissions\.$/);
+    if (serviceStatus)
+        return `Il servizio ha restituito HTTP ${serviceStatus[1]}. Verifica disponibilità, quota e permessi del progetto.`;
+    if (s === 'The provider reports that the project has no available credits or quota (HTTP 402).')
+        return 'Il progetto non ha crediti o quota disponibili (HTTP 402).';
+    if (s === 'The app could not check its AI usage limit. Its hosted database needs attention; the provider was not called.')
+        return 'L’app non ha potuto verificare il limite di utilizzo AI. Il database del server richiede un controllo; il servizio AI non è stato contattato.';
+    return s === 'AMD demo uses fixed fictional records only. Token Factory does not permit sensitive health data.' ? 'La demo AMD usa solo registrazioni fittizie predefinite. Token Factory non consente dati sanitari sensibili.' : s;
+    } const key = s.trim(); return translations[key] ? s.replace(key, translations[key]) : s; }
 function tree(node: React.ReactNode, locale: Locale): React.ReactNode { if (typeof node === 'string')
     return translate(node, locale); if (Array.isArray(node))
     return node.map((n, i) => <React.Fragment key={React.isValidElement(n) ? n.key ?? i : i}>{tree(n, locale)}</React.Fragment>); if (!React.isValidElement(node))
